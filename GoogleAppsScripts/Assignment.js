@@ -122,12 +122,15 @@ function refreshMembers_(sheetName,colorStyle){
 function resetMemberAssignments(){
   var sheet = config.ss.getSheetByName(_G.sheetName.assignments);
   
-  // Roles to find
-  var aRolePrefix = ["TA-","HL-","M_DPS-","R_DPS-"]
-  var existingRolePrefix = config.ss.getRangeByName(_G.sheetName.raiders + "!" + _G.namedRange.raidRoles).getDisplayValues();
+  var existingRolePrefix = config
+    .ss
+    .getRangeByName(_G.sheetName.raiders + "!" + _G.namedRange.raidRoles)
+    .getDisplayValues();
 
-  var aClassPrefix = ["T-Warrior-","T-DK-","T-Druid-","T-Paladin-","H-Paladin-","H-Priest-","H-Shaman-","H-Druid-","M-Warrior-","M-Paladin-","M-Shaman-","M-DK-","M-Rogue-","M-Druid-","R-Shaman-","R-Mage-","R-Warlock-","R-Hunter-","R-Druid-","R-Priest-"]
-  var existingClassRolePrefix = config.ss.getRangeByName(_G.sheetName.raiders + "!" + _G.namedRange.raidRoleClass).getDisplayValues();
+  var existingClassRolePrefix = config
+    .ss
+    .getRangeByName(_G.sheetName.raiders + "!" + _G.namedRange.raidRoleClass)
+    .getDisplayValues();
   
   var listCurrentRoles = existingRolePrefix.map(function(row) {return row[0];});
   var listCurrentClassRoles = existingClassRolePrefix.map(function(row) {return row[0];});
@@ -135,14 +138,13 @@ function resetMemberAssignments(){
   const cellsToColor = [];
   
   // Iterate all roles
-  //sheet.getDataRange().getDisplayValues()
   sheet.getRange(1,1,sheet.getLastRow(),10).getDisplayValues()
     .forEach((row, rowIndex) => row
       .forEach((value, columnIndex) => {
         if(columnIndex >= 2 && columnIndex <= 10){
-          aRolePrefix.forEach(function(searchFor){
+          _G.autoAssign.rolePrefix.forEach(function(searchFor){
             if(value.startsWith(searchFor)){
-              if(listCurrentRoles.indexOf(value) == -1 ){
+              if(listCurrentRoles.indexOf(value) == -1 || value === "None" ){
                 cellsToColor.push(sheet.getRange(rowIndex + 1, columnIndex + 1));
               }
             }
@@ -164,17 +166,19 @@ function resetMemberAssignments(){
     .forEach((row, rowIndex) => row
       .forEach((value, columnIndex) => {
         if(columnIndex >= 2){
-          aClassPrefix.forEach(function(searchFor){
+          _G.autoAssign.classRolePrefix.forEach(function(searchFor){
              if(value.startsWith(searchFor)){
               if(listCurrentClassRoles.indexOf(value) == -1 ){
-                cellsToColor.push(sheet.getRange(rowIndex + 1, columnIndex + 1));
+                //cellsToColor.push(sheet.getRange(rowIndex + 1, columnIndex + 1));
+                sheet
+                  .getRange(rowIndex + 1, columnIndex + 1)
+                  .offset(0,-4)
+                  .setBackground('#2f3136')
+                  .setValue("")
               }
             }
           });
         }
       })
     );
-  
-  // Reset all missing assignments (none existing players class roles or role types) 
-  cellsToColor.forEach(cell => cell.offset(0,-4).setBackground('#2f3136').setValue(""));
 }
