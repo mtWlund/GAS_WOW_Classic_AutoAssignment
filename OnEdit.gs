@@ -6,7 +6,7 @@
 function onEdit(e) {
   // auto update if using Raid Role Id to change members,
   // minor changes to Assignments does not require a full "Magic" run.
-  var sheetName = config.ss.getActiveSheet().getName();
+  var sheetName = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet().getName();
   
   if("Assignments" === sheetName) { assignRaiderToRole_(e) }
 }
@@ -40,8 +40,7 @@ function assignRaiderToRole_(e) {
   var rolesFlat = roles.map(function(row) {return row[0];});
   var colorStyle = sApp.getRangeByName(_G.sheetName.raiders + "!" + _G.namedRange.classColoringStyle).getValue();
 
-  if(rolesFlat.indexOf(e.value) != -1)
-  {
+  if(rolesFlat.indexOf(e.value) != -1){
     var raidMembers = sApp.getRangeByName(_G.sheetName.raiders + "!" + _G.namedRange.composition);
     var raidMembersList = raidMembers.getValues();
         
