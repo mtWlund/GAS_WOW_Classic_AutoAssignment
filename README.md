@@ -5,6 +5,10 @@ Working example can be found in this Public shared Spreadsheet:
 https://docs.google.com/spreadsheets/d/1jTN0zQCDNsanoSxYwognIV04Lg7BH80AvigdMbK0vfs/edit?usp=sharing
 Under file menu choose "Copy" to download a copy to your Google Account.
 
+## Note on file extension
+Google apps script are stored with extension .gs however there is currently no support for .gs (that i can find) in VSCode for this.
+So i have them stored as javascript files (.js) and you only need to know that when you create a script file, dont add a extension. Just enter the name of the file (or choose one on your own) and be aware it will end with .gs instead of .js.
+
 ## Google Apps Script
 To add this into your own Spreadsheet/Document:
 1. Go to Spreadsheet or Create a new one.
